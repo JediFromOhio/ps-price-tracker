@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright
+from db import get_connection, save_price_record
 
 TARGET_HASH = "a3674adcab1c43cc5847002da67e12a2d138f3ad9dc67dd362452220ea492b26"
 
@@ -33,15 +34,19 @@ def fetch_product_data(page, product_url: str, product_id: str):
 
 
 def run():
+    conn = get_connection()
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-
+        
         results = []
         failures = []
+
         for item in PRODUCTS:
             page = browser.new_page()
             try:
                 data = fetch_product_data(page, item["url"], item["product_id"])
+                save_price_record(conn, item["product_id"], data)
                 results.append(data)  
                 print(data)      
             except Exception as e:
@@ -52,6 +57,8 @@ def run():
 
         browser.close()
 
+    conn.close()
+    
     if failures:
         print(f"{len(failures)} title(s) failed this run:", failures)
 
