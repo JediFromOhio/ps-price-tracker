@@ -1,12 +1,15 @@
 from playwright.sync_api import sync_playwright
-from db import get_connection, save_price_record
+from db import *
+from notifier import send_failure_summary, send_price_drop_alert
 
 TARGET_HASH = "a3674adcab1c43cc5847002da67e12a2d138f3ad9dc67dd362452220ea492b26"
 
 PRODUCTS = [
     { "url": "https://store.playstation.com/en-us/product/UP1018-PPSA01617_00-00MORTALKOMBAT11", "product_id": "UP1018-PPSA01617_00-00MORTALKOMBAT11"},
     { "url": "https://store.playstation.com/en-us/product/UP0006-PPSA19534_00-SANTIAGOSTANDARD", "product_id": "UP0006-PPSA19534_00-SANTIAGOSTANDARD"},
-    { "url": "https://store.playstation.com/en-us/product/EP3969-PPSA11386_00-007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_00-007FIRSTLIGHT000"}
+    { "url": "https://store.playstation.com/en-us/product/EP3969-PPSA11386_00-007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_00-007FIRSTLIGHT000"},
+    { "url": "https://store.playstation.com/en-us/product/EP3969-PP007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_0IGHT000"}
+
 ]
 
 def fetch_product_data(page, product_url: str, product_id: str):
@@ -46,7 +49,19 @@ def run():
             page = browser.new_page()
             try:
                 data = fetch_product_data(page, item["url"], item["product_id"])
+
+                previous_price = get_last_price(conn, item["product_id"])
                 save_price_record(conn, item["product_id"], data)
+
+                if previous_price is not None and data["current_price"] < previous_price:
+                    print(f"PRICE DROP for {data['name']}: {previous_price} -> {data['current_price']}")
+                    send_price_drop_alert(
+                        data["name"],
+                        previous_price,
+                        data["current_price"],
+                        item["url"]
+                    )
+
                 results.append(data)  
                 print(data)      
             except Exception as e:
@@ -61,6 +76,7 @@ def run():
     
     if failures:
         print(f"{len(failures)} title(s) failed this run:", failures)
+        send_failure_summary(failures)
 
     return results
 

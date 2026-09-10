@@ -33,7 +33,16 @@ def save_price_record(conn, product_id, data):
         cur.execute(query, values)
     conn.commit()
 
-if __name__ == "__main__":
-    conn = get_connection()
-    print("Connected:", conn)
-    conn.close()
+def get_last_price(conn, product_id):
+    query = """
+        SELECT current_price FROM price_history
+        WHERE product_id = %s
+        ORDER BY checked_at DESC
+        LIMIT 1
+    """
+    with conn.cursor() as cur:
+        cur.execute(query, (product_id,))
+        row = cur.fetchone()
+    
+    return row[0] if row else None
+    
