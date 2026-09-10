@@ -7,9 +7,7 @@ TARGET_HASH = "a3674adcab1c43cc5847002da67e12a2d138f3ad9dc67dd362452220ea492b26"
 PRODUCTS = [
     { "url": "https://store.playstation.com/en-us/product/UP1018-PPSA01617_00-00MORTALKOMBAT11", "product_id": "UP1018-PPSA01617_00-00MORTALKOMBAT11"},
     { "url": "https://store.playstation.com/en-us/product/UP0006-PPSA19534_00-SANTIAGOSTANDARD", "product_id": "UP0006-PPSA19534_00-SANTIAGOSTANDARD"},
-    { "url": "https://store.playstation.com/en-us/product/EP3969-PPSA11386_00-007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_00-007FIRSTLIGHT000"},
-    { "url": "https://store.playstation.com/en-us/product/EP3969-PP007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_0IGHT000"}
-
+    { "url": "https://store.playstation.com/en-us/product/EP3969-PPSA11386_00-007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_00-007FIRSTLIGHT000"}
 ]
 
 def fetch_product_data(page, product_url: str, product_id: str):
