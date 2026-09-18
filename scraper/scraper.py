@@ -1,14 +1,23 @@
-from playwright.sync_api import sync_playwright
 from db import *
 from notifier import send_failure_summary, send_price_drop_alert
+from playwright.sync_api import sync_playwright
 
 TARGET_HASH = "a3674adcab1c43cc5847002da67e12a2d138f3ad9dc67dd362452220ea492b26"
 
 PRODUCTS = [
     { "url": "https://store.playstation.com/en-us/product/UP1018-PPSA01617_00-00MORTALKOMBAT11", "product_id": "UP1018-PPSA01617_00-00MORTALKOMBAT11"},
     { "url": "https://store.playstation.com/en-us/product/UP0006-PPSA19534_00-SANTIAGOSTANDARD", "product_id": "UP0006-PPSA19534_00-SANTIAGOSTANDARD"},
-    { "url": "https://store.playstation.com/en-us/product/EP3969-PPSA11386_00-007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_00-007FIRSTLIGHT000"}
+    { "url": "https://store.playstation.com/en-us/product/EP3969-PPSA11386_00-007FIRSTLIGHT000", "product_id": "EP3969-PPSA11386_00-007FIRSTLIGHT000"},
+    { "url": "https://store.playstation.com/en-us/product/UP0006-PPSA34015_00-27STANDARDBUNDLE", "product_id": "UP0006-PPSA34015_00-27STANDARDBUNDLE"},
+    { "url": "https://store.playstation.com/en-us/product/UP0006-PPSA34015_00-27ULTIMATEBUNDLE", "product_id": "UP0006-PPSA34015_00-27ULTIMATEBUNDLE"},
+    { "url": "https://store.playstation.com/en-us/product/UP1018-PPSA07570_00-MK1DEFINED000000", "product_id": "UP1018-PPSA07570_00-MK1DEFINED000000"},
+    { "url": "https://store.playstation.com/en-us/product/EP1004-PPSA01547_00-GTAVISTANDARD001", "product_id": "EP1004-PPSA01547_00-GTAVISTANDARD001"},
+    { "url": "https://store.playstation.com/en-us/product/UP9000-PPSA08329_00-GOWRAGNAROKDELUX", "product_id": "UP9000-PPSA08329_00-GOWRAGNAROKDELUX"},
+    { "url": "https://store.playstation.com/en-us/product/UP9000-PPSA08329_00-GOWRAGNAROK00000", "product_id": "UP9000-PPSA08329_00-GOWRAGNAROK00000"},
+    { "url": "https://store.playstation.com/en-us/product/UP1004-PPSA03420_00-GTAVCROSSGENBUND", "product_id": "UP1004-PPSA03420_00-GTAVCROSSGENBUND"},
+    { "url": "https://store.playstation.com/en-us/product/UP6312-PPSA22327_00-0629872585919347", "product_id": "UP6312-PPSA22327_00-0629872585919347"}
 ]
+
 
 def fetch_product_data(page, product_url: str, product_id: str):
     with page.expect_response(lambda response: TARGET_HASH in response.url) as response_info:
@@ -31,7 +40,6 @@ def fetch_product_data(page, product_url: str, product_id: str):
     }
     result["current_price"] = result["discounted_price"] or result["base_price"] 
     return result
-
 
 
 def run():
