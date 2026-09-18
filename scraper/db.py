@@ -1,8 +1,11 @@
 import os
-from dotenv import load_dotenv
+
 import psycopg2
+from dotenv import load_dotenv
+
 
 load_dotenv()
+
 
 def get_connection():
     return psycopg2.connect(
@@ -12,6 +15,7 @@ def get_connection():
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT")
     )
+
 
 def save_price_record(conn, product_id, data):
     query = """
@@ -33,6 +37,7 @@ def save_price_record(conn, product_id, data):
         cur.execute(query, values)
     conn.commit()
 
+
 def get_last_price(conn, product_id):
     query = """
         SELECT current_price FROM price_history
@@ -45,4 +50,3 @@ def get_last_price(conn, product_id):
         row = cur.fetchone()
     
     return row[0] if row else None
-    
