@@ -217,5 +217,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Ignore terraform variable files
+# Terraform 
 *.tfvars
+*.tfstate
+*.tfstate.*
+**/.terraform/*
+.terraform.lock.hcl.bak
