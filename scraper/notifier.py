@@ -4,10 +4,11 @@ import boto3
 
 SENDER_EMAIL = os.getenv("ALERT_SENDER_EMAIL")
 RECIPIENT_EMAIL = os.getenv("ALERT_RECIPIENT_EMAIL")
+profile_name = os.getenv("AWS_PROFILE")
 
 
 def send_price_drop_alert(item_name, old_price, new_price, product_url):
-    session = boto3.Session(profile_name="ps-price-tracker")
+    session = boto3.Session(profile_name="ps-price-tracker") if profile_name else boto3.Session()
     ses_client = session.client("ses", region_name="us-east-1")
 
     subject = f"Price Drop Alert: {item_name}"
@@ -42,7 +43,7 @@ def send_price_drop_alert(item_name, old_price, new_price, product_url):
 
 
 def send_failure_summary(failures):
-    session = boto3.Session(profile_name="ps-price-tracker")
+    session = boto3.Session(profile_name="ps-price-tracker") if profile_name else boto3.Session()
     ses_client = session.client("ses", region_name="us-east-1")
 
     subject = f"PS Price Tracker: {len(failures)} title(s) failed this run"
