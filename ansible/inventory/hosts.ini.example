@@ -1,2 +1,2 @@
-[group_name]
-instance_public_ip_address ansible_user=instance_username ansible_ssh_private_key_file=path_to_key
+[scraper]
+<EC2 PUBLIC IP> ansible_user=ubuntu ansible_ssh_private_key_file=<PATH TO PRIVATE SSH KEY>
