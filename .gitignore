@@ -223,3 +223,9 @@ __marimo__/
 *.tfstate.*
 **/.terraform/*
 .terraform.lock.hcl.bak
+
+# Ignore vscode settings
+*.vscode
+
+# Ansible
+ansible/inventory/hosts.ini
