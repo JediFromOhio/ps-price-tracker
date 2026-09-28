@@ -1,0 +1,72 @@
+- name: Configure scraper EC2 instance
+  hosts: scraper
+  become: true
+
+  tasks:
+    - name: Install prerequisite packages
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+        update_cache: true
+
+    - name: Add Docker's official GPG key
+      apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Install Docker
+      apt: 
+        name: docker-ce
+        state: present
+        update_cache: true
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: true      
+
+    - name: Pull scraper image from GHCR
+      docker_image:
+        name: ghcr.io/jedifromohio/ps-price-tracker
+        tag: latest
+        source: pull
+        force_source: true
+
+    - name: Deploy environment file
+      template:
+        src: templates/env.j2
+        dest: /home/ubuntu/.env
+        mode: '0600'
+
+    - name: Deploy scraper service unit
+      template:
+        src: templates/scraper.service.j2
+        dest: /etc/systemd/system/scraper.service
+        mode: '0644'
+
+    - name: Deploy scraper timer unit
+      template:
+        src: templates/scraper.timer.j2
+        dest: /etc/systemd/system/scraper.timer
+        mode: '0644'
+
+    - name: Reload systemd to pick up new unit files
+      systemd:
+        daemon_reload: true
+      
+    - name: Enable and start the scraper timer
+      systemd:
+        name: scraper.timer
+        enabled: true
+        state: started
+
+      

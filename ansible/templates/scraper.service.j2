@@ -1,0 +1,8 @@
+[Unit]
+Description=PS Price Tracker scraper
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker run --rm --env-file /home/ubuntu/.env ghcr.io/jedifromohio/ps-price-tracker:latest
