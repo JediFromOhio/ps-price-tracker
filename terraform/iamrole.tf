@@ -38,3 +38,8 @@ resource "aws_iam_instance_profile" "ec2_ses" {
   name = "ps-price-tracker-ec2-ses-profile"
   role = aws_iam_role.ec2_ses.name
 }
+
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role        = aws_iam_role.ec2_ses.name
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
