@@ -23,7 +23,11 @@ def send_price_drop_alert(item_name, old_price, new_price, product_url):
     <html>
         <body style="font-family: Arial, sans-serif; color: #222;">
             <h2>Price drop: {item_name}</h2>
-            <p><s>${old_price / 100:.2f}</s> &rarr; <strong style="color: #1a7f37;">${new_price / 100:.2f}</strong></p>
+            <p>
+                <s>${old_price / 100:.2f}</s>
+                &rarr;
+                <strong style="color: #1a7f37;">${new_price / 100:.2f}</strong>
+            </p>
             <p><a href="{product_url}">View on Playstation Store</a></p>
         </body>
     </html>
