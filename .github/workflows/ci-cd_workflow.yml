@@ -95,11 +95,7 @@ jobs:
       - name: Execute deployment via AWS SSM
         run: |
           aws ssm send-command \
-          --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
-          --document-name "AWS-RunShellScript" \
-          --comment "Deploying new scraper image from GHCR" \
-          --parameters 'commands=[
-            "docker pull ghcr.io/jedifromohio/ps-price-tracker:latest",
-            "docker image prune -f"
-            ]'\
-          --output text
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploying new scraper image from GHCR" \
+            --parameters '{"commands":["docker pull ghcr.io/jedifromohio/ps-price-tracker:latest","docker image prune -f"]}'
