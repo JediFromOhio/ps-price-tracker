@@ -67,8 +67,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/jedifromohio/ps-price-tracker:latest
+            ghcr.io/jedifromohio/ps-price-tracker:${{ github.sha }}
 
   deploy:
     name: Deploy to EC2 via AWS SSM
