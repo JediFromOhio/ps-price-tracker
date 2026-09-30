@@ -22,7 +22,10 @@ resource "aws_iam_role" "github_actions_deploy" {
             "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" : "repo:jedifromohio/ps-price-tracker:ref:refs/heads/main"
+            "token.actions.githubusercontent.com:sub" : [
+              "repo:JediFromOhio/ps-price-tracker:*",
+              "repo:jedifromohio/ps-price-tracker:*"
+            ]
           }
         }
       }
