@@ -1,0 +1,12 @@
+[tool.pytest.ini_options]
+pythonpath = ["scraper"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "F", # Pyflakes ( detects undefined variables, unused imports )
+    "I", # isort ( automatically sorts imports )
+]
